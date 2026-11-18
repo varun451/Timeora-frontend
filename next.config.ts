@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
-const BACKEND_URL = (process.env.BACKEND_URL ?? "http://localhost:5000").replace(/\/$/, "");
+function getBackendUrl(): string {
+  let url = (process.env.BACKEND_URL || "http://localhost:5000").trim();
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    url = `https://${url}`;
+  }
+  return url.replace(/\/$/, "");
+}
+
+const BACKEND_URL = getBackendUrl();
 
 const nextConfig: NextConfig = {
   turbopack: {
